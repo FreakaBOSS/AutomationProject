@@ -2,17 +2,14 @@ package com.oelisavetchi.bdd.stepDefinition;
 
 import com.oelisavetchi.bdd.ApplicationProperty;
 import com.oelisavetchi.bdd.Base;
-import com.oelisavetchi.bdd.PageElements;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import lombok.experimental.Helper;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 
-import java.util.Properties;
+import static com.oelisavetchi.bdd.enums.Messages.*;
+import static com.oelisavetchi.bdd.enums.PageElements.*;
 
 @Log4j2
 public class StepDefinitions extends Base {
@@ -33,32 +30,32 @@ public class StepDefinitions extends Base {
 
     @When("user enter the {string} and {string}")
     public void userEnterTheUsername(String username, String password) {
-        driver.findElement(By.id("user-name")).sendKeys(username);
-        driver.findElement(By.id("password")).sendKeys(password);
+        driver.findElement(By.id(USER_NAME.getElement())).sendKeys(username);
+        driver.findElement(By.id(PASSWORD.getElement())).sendKeys(password);
     }
 
 
     @When("user click the login button")
     public void userClickTheLoginButton() {
-        driver.findElement(By.id(PageElements.LOGIN_BUTTON.getElement())).click();
+        driver.findElement(By.id(LOGIN_BUTTON.getElement())).click();
     }
 
 
     @Then("user should navigate to Swag Labs home page")
     public void userShouldNavigateToSwagLabsHomePage() throws InterruptedException {
 
-        By ProductLabel = By.xpath(PageElements.PRODUCT_LABEL.getElement());
+        By ProductLabel = By.xpath(PRODUCT_LABEL.getElement());
         boolean isDisplayed = driver.findElement(ProductLabel).isDisplayed();
 
 
         if (isDisplayed) {
             synchronized (this) {
-                log.info("Navigated Successfully");
+                log.info(NAVIGATED_SUCCESSFULLY.getMessage());
                 this.wait(2000);
                 driver.close();
             }
         } else {
-            log.info("Not navigated");
+            log.info(NOT_NAVIGATED.getMessage());
         }
 
     }
@@ -66,17 +63,17 @@ public class StepDefinitions extends Base {
     @Then("user should not navigate to Swag Labs home page")
     public void userShouldNotNavigateToSwagLabsHomePage() throws InterruptedException {
 
-        By SwagLabLabel = By.xpath(PageElements.SWAG_LAB_LABEL.getElement());
+        By SwagLabLabel = By.xpath(SWAG_LAB_LABEL.getElement());
         boolean isDisplayed = driver.findElement(SwagLabLabel).isDisplayed();
 
         if (isDisplayed) {
             synchronized (this) {
-                log.info("Not Navigated");
+                log.info(NOT_NAVIGATED.getMessage());
                 this.wait(2000);
                 driver.close();
             }
         } else {
-            log.info("Navigated to Home page");
+            log.info(NOT_NAVIGATED.getMessage());
         }
 
     }
@@ -86,30 +83,26 @@ public class StepDefinitions extends Base {
     @Then("user should see the correct error message")
     public void userShouldSeeTheCorrectErrorMessage() {
 
-        String warnMessage = "Error message is correct: ";
-        String epicMessage = "Epic sadface: Username is required";
-        String errorMessage = driver.findElement(By.xpath("//*[@id=\"login_button_container\"]/div/form/div[3]/h3")).getAttribute("innerText");
+        String errorMessage = driver.findElement(By.xpath(LOGIN_BUTTON_CONTAINER.getElement())).getAttribute(INNER_TEXT.getElement());
 
         if (username != null) {
-            if (username.isEmpty() && password.isEmpty() && errorMessage.equals(epicMessage)) {
-                logMSG(warnMessage, errorMessage);
-            } else if (username.isEmpty() && password.equals("something") && errorMessage.equals(epicMessage)) {
-                logMSG(warnMessage, errorMessage);
-            } else if (username.equals("something") && password.isEmpty() && errorMessage.equals(epicMessage)) {
-                logMSG(warnMessage, errorMessage);
-            } else if (username.equals("something") && password.equals("somethings") && errorMessage.equals("Epic sadface: Username and password do not match any user in this service")) {
-                logMSG(warnMessage, errorMessage);
+            if (username.isEmpty() && password.isEmpty() && errorMessage.equals(USERNAME_IS_REQUIRED.getMessage())) {
+                log.info(ERROR_MESSAGE_IS_CORRECT.getMessage(), errorMessage);
             } else {
-                logMSG("Error message is wrong: ", errorMessage);
+                if (username.isEmpty() && password.equals(SOMETHING.getMessage()) && errorMessage.equals(USERNAME_IS_REQUIRED.getMessage())) {
+                    log.info(ERROR_MESSAGE_IS_CORRECT.getMessage(), errorMessage);
+                } else if (username.equals(SOMETHING.getMessage()) && password.isEmpty() && errorMessage.equals(USERNAME_IS_REQUIRED.getMessage())) {
+                    log.info(ERROR_MESSAGE_IS_CORRECT.getMessage(), errorMessage);
+                } else if (username.equals(SOMETHING.getMessage()) && password.equals(SOMETHINGS.getMessage()) && errorMessage.equals(USERNAME_AND_PASSWORD_DO_NOT_MATCH.getMessage())) {
+                    log.info(ERROR_MESSAGE_IS_CORRECT.getMessage(), errorMessage);
+                } else {
+                    log.info(ERROR_MESSAGE_IS_WRONG.getMessage(), errorMessage);
+                }
             }
         } else {
-            logMSG("User name is null: ", errorMessage);
+            log.info(USER_NAME_IS_NULL.getMessage(), errorMessage);
         }
         driver.quit();
-    }
-
-    private static void logMSG(String warnMessage, String errorMessage) {
-        log.warn("{} {}", warnMessage, errorMessage);
     }
 
 //logout.feature
@@ -120,14 +113,14 @@ public class StepDefinitions extends Base {
         String url = "https://www.saucedemo.com/";
         this.driver = this.inheritance();
         this.driver.get(url);
-        driver.findElement(By.id(PageElements.USER_NAME.getElement())).sendKeys(Username);
-        driver.findElement(By.id(PageElements.PASSWORD.getElement())).sendKeys(Password);
-        driver.findElement(By.id(PageElements.LOGIN_BUTTON.getElement())).click();
+        driver.findElement(By.id(USER_NAME.getElement())).sendKeys(Username);
+        driver.findElement(By.id(PASSWORD.getElement())).sendKeys(Password);
+        driver.findElement(By.id(LOGIN_BUTTON.getElement())).click();
     }
 
     @Given("user should navigate to left sidebar")
     public void user_should_navigate_to_left_sidebar() throws InterruptedException {
-        driver.findElement(By.id(PageElements.REACT_BURGER_MENU_BTN.getElement())).click();
+        driver.findElement(By.id(REACT_BURGER_MENU_BTN.getElement())).click();
         synchronized (this) {
             this.wait(2000L);
         }
@@ -135,15 +128,15 @@ public class StepDefinitions extends Base {
 
     @When("user click the logout button")
     public void userClickTheLogoutButton() {
-        driver.findElement(By.linkText(PageElements.LOGOUT.getElement())).click();
+        driver.findElement(By.linkText(LOGOUT.getElement())).click();
     }
 
     @Then("user should logout from Swag Labs")
     public void userShouldLogoutFromSwagLabs() {
 
-        boolean isDisabled = driver.findElement(By.xpath(PageElements.SWAG_LAB_LABEL.getElement())).isDisplayed();
+        boolean isDisabled = driver.findElement(By.xpath(SWAG_LAB_LABEL.getElement())).isDisplayed();
 
-        String result = isDisabled ? "Logout successfully" : "Unable to logout";
+        String result = isDisabled ? LOGOUT_SUCCESSFULLY.getMessage() : UNABLE_TO_LOGOUT.getMessage();
         log.info(result);
 
         this.driver.quit();
