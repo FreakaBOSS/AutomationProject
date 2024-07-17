@@ -2,11 +2,14 @@ package com.oelisavetchi.bdd.stepDefinition;
 
 import com.oelisavetchi.bdd.ApplicationProperty;
 import com.oelisavetchi.bdd.Base;
+import com.oelisavetchi.bdd.Helper;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
+
+import java.util.ArrayList;
 
 import static com.oelisavetchi.bdd.enums.Messages.*;
 import static com.oelisavetchi.bdd.enums.PageElements.*;
@@ -143,132 +146,98 @@ public class StepDefinitions extends Base {
     }
 
 
-////footer.feature
-//
-//    @Then("user should see the footer")
-//    public void user_should_see_the_footer() {
-//
-//        Helper H1 = new Helper(driver);
-//        boolean var1 = H1.Footer().isDisplayed();
-//
-//        if (var1) {
-//
-//            log.info("footer is displayed");
-//        } else {
-//
-//            log.info("Not displayed: footer");
-//        }
-//
-//        driver.quit();
-//
-//    }
-//
-//    @Then("user should see the correct footer text")
-//    public void user_should_see_the_correct_footer_text() {
-//
-//        Helper H1 = new Helper(driver);
-//        String footerText = H1.FooterText().getAttribute("innerText");
-//
-//        if (footerText.equals("© 2023 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy")) {
-//
-//            log.info("footer Text is correct");
-//        } else {
-//
-//            log.info("footer Text is not correct");
-//        }
-//
-//        driver.quit();
-//
-//    }
-//
-//    @When("user clicked the twitter icon")
-//    public void user_clicked_the_twitter_icon() {
-//
-//        driver.findElement(By.linkText("https://twitter.com/saucelabs")).click();
-//
-//    }
-//
-//    @Then("user should navigate to swag labs twitter page")
-//    public void user_should_navigate_to_swag_labs_twitter_page() throws InterruptedException {
-//        ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
-//        driver.switchTo().window(tabs2.get(0));
-//        driver.switchTo().window(tabs2.get(1));
-//
-//        Helper H1 = new Helper(driver);
-//        String twitterpageName = H1.TwitterPage().getAttribute("innerText");
-//
-//        if (twitterpageName.equals("Sauce Labs")) {
-//
-//            log.info("Navigated to twitter page");
-//        } else {
-//            log.info("Not Navigated to twitter page");
-//        }
-//
-//        Thread.sleep(1000);
-//        driver.quit();
-//
-//    }
-//
-//    @When("User clicked the facebook icon")
-//    public void user_clicked_the_facebook_icon() throws InterruptedException {
-//        driver.findElement(By.linkText("https://www.facebook.com/saucelabs")).click();
-//
-//
-//    }
-//
-//    @Then("User should navigate to swag labs facebook page")
-//    public void user_should_navigate_to_swag_labs_facebook_page() throws InterruptedException {
-//
-//        ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
-//        driver.switchTo().window(tabs2.get(0));
-//        driver.switchTo().window(tabs2.get(1));
-//
-//        Helper H1 = new Helper(driver);
-//        String fbpageName = H1.FacebookPage().getAttribute("innerText");
-//
-//        if (fbpageName.equals("Sauce Labs")) {
-//
-//            log.info("Navigated to facebook page");
-//        } else {
-//
-//            log.info("Not Navigated to facebook page");
-//        }
-//
-//        Thread.sleep(1000);
-//        driver.quit();
-//    }
-//
-//    @When("user clicked the linkedin icon")
-//    public void user_clicked_the_linkedin_icon() {
-//        driver.findElement(By.linkText("https://www.linkedin.com/company/sauce-labs/")).click();
-//
-////		Helper H1 = new Helper(driver);
-////		H1.LinkedInButton().click();
-//
-//    }
-//
-//    @Then("user should navigate to swag labs linkedin page")
-//    public void user_should_navigate_to_swag_labs_linkedin_page() throws InterruptedException {
-//
-//        ArrayList<String> tabs2 = new ArrayList<String>(driver.getWindowHandles());
-//        driver.switchTo().window(tabs2.get(0));
-//        driver.switchTo().window(tabs2.get(1));
-//
-//        Helper H1 = new Helper(driver);
-//        String linkedInPageName = H1.LinkedinPage().getAttribute("innerText");
-//
-//        if (linkedInPageName.equals("Sauce Labs")) {
-//
-//            System.out.println("Navigated to linkedIn page");
-//        } else {
-//
-//            System.out.println("Not Navigated to linkedIn page");
-//        }
-//
-//        Thread.sleep(1000);
-//        driver.quit();
-//    }
-//
+//footer.feature
+
+    @Then("user should see the footer")
+    public void userShouldSeeTheFooter() {
+
+        boolean isDisplayed = driver.findElement(By.xpath(FOOTER.getElement())).isDisplayed();
+
+        log.info(isDisplayed ? FOOTER_IS_DISPLAYED.getMessage() : FOOTER_IS_NOT_DISPLAYED.getMessage());
+
+        driver.quit();
+
+    }
+
+    @Then("user should see the correct footer text")
+    public void userShouldSeeTheCorrectFooterText() {
+
+        String footerText = driver.findElement(By.xpath(FOOTER_TEXT.getElement())).getAttribute(INNER_TEXT.getElement());
+
+        log.info(footerText.equals(FOOTER_RIGHTS.getMessage()) ? FOOTER_TEXT_IS_CORRECT.getMessage() : FOOTER_TEXT_IS_NOT_CORRECT);
+
+        driver.quit();
+
+    }
+
+    @When("user clicked the twitter icon")
+    public void userClickedTheTwitterIcon() {
+
+        driver.findElement(By.linkText(TWITTER_LINK.getElement())).click();
+
+    }
+
+    @Then("user should navigate to swag labs twitter page")
+    public void userShouldNavigateToSwagLabsTwitterPage() throws InterruptedException {
+        ArrayList<String> tabs2 = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs2.get(0));
+        driver.switchTo().window(tabs2.get(1));
+
+        String twitterPageName = driver.findElement(By.xpath(TWITTER_PAGE.getElement())).getAttribute(INNER_TEXT.getElement());
+
+        log.info(twitterPageName.equals(SAUCE_LABS.getMessage()) ? TWITTER_PAGE_IS_AVAILABLE.getMessage() : TWITTER_PAGE_IS_NOT_AVAILABLE.getMessage());
+
+        synchronized (this) {
+            wait(1000);
+            driver.quit();
+        }
+    }
+
+    @When("user clicked the facebook icon")
+    public void userClickedTheFacebookIcon() {
+        driver.findElement(By.linkText(FACEBOOK_PAGE.getElement())).click();
+    }
+
+    @Then("user should navigate to swag labs facebook page")
+    public void userShouldNavigateToSwagLabsFacebookPage() throws InterruptedException {
+
+        ArrayList<String> tabs2 = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs2.get(0));
+        driver.switchTo().window(tabs2.get(1));
+
+
+        String facebookPageName = driver.findElement(By.xpath(FACEBOOK_PAGE.getElement())).getAttribute(INNER_TEXT.getElement());
+
+        log.info(facebookPageName.equals(SAUCE_LABS.getMessage()) ? FACEBOOK_PAGE_IS_AVAILABLE.getMessage() : FACEBOOK_PAGE_IS_NOT_AVAILABLE.getMessage());
+
+        synchronized (this) {
+            wait(1000);
+            driver.quit();
+        }
+    }
+
+    @When("user clicked the linkedin icon")
+    public void userClickedTheLinkedinIcon() {
+
+        driver.findElement(By.linkText(LINKEDIN_LINK.getElement())).click();
+    }
+
+    @Then("user should navigate to swag labs linkedin page")
+    public void userShouldNavigateToSwagLabsLinkedinPage() throws InterruptedException {
+
+        ArrayList<String> tabs2 = new ArrayList<>(driver.getWindowHandles());
+        driver.switchTo().window(tabs2.get(0));
+        driver.switchTo().window(tabs2.get(1));
+
+        String linkedinPageName = driver.findElement(By.xpath(LINKEDIN_PAGE.getElement())).getAttribute(INNER_TEXT.getElement());
+
+        log.info(linkedinPageName.equals(SAUCE_LABS.getMessage()) ? LINKEDIN_PAGE_IS_AVAILABLE.getMessage() : LINKEDIN_PAGE_IS_NOT_AVAILABLE.getMessage());
+        synchronized (this) {
+            wait(1000);
+            driver.quit();
+        }
+    }
+
 ////product.feature
 //
 //    @Then("User should see the product title label")
