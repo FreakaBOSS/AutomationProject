@@ -26,17 +26,17 @@ Feature: Login to Swag lab page
     Examples:
       | Username        | Password        |
       | "standard_user" | "secrets_sauce" |
-#   |"standard_user"|" "  |
-#   |"standard_user"|""|
-#   |"locked_out_user"|"secret_sauce" |
-#   |"locked_out_user"|" " |
-#   |"locked_out_user"|"" |
-#   |"problem_user"|"wsecret_sauce" |
-#   |"problem_user"|" " |
-#   |"problem_user"|""  |
-#   |"performance_glitch_user"|"secret_sauced" |
-#   |"performance_glitch_user"|" "  |
-#   |"performance_glitch_user"|""  |
+      | "standard_user"           | " "             |
+      | "standard_user"           | ""              |
+      | "locked_out_user"         | "secret_sauce"  |
+      | "locked_out_user"         | " "             |
+      | "locked_out_user"         | ""              |
+      | "problem_user"            | "wsecret_sauce" |
+      | "problem_user"            | " "             |
+      | "problem_user"            | ""              |
+      | "performance_glitch_user" | "secret_sauced" |
+      | "performance_glitch_user" | " "             |
+      | "performance_glitch_user" | ""              |
 
 
   @tag3
